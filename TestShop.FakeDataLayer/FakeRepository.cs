@@ -6,26 +6,27 @@ namespace TestShop.FakeDataLayer
 {
 	public class FakeRepository<T> : IRepository<T> where T : class, IEntityBase
 	{
-		private readonly IList<T> _entities;
-
-		public FakeRepository(IList<T> entities)
+		private readonly IEnumerable<IEntityBase> _entities;
+		public FakeRepository(IEnumerable<IEntityBase> entities)
 		{
 			_entities = entities;
 		}
 
 		public IQueryable<T> GetAll()
 		{
-			return _entities.AsQueryable();
+			return _entities.Cast<T>().AsQueryable();
 		}
 
 		public T Get(int entityId)
 		{
-			return _entities.FirstOrDefault(e => e.EntityId == entityId);
+			return _entities.FirstOrDefault(e => e.EntityId == entityId) as T;
 		}
 
 		public void Create(T entity)
 		{
-			_entities.Add(entity);
+			entity.EntityId = _entities.Count();
+
+			((List<IEntityBase>)_entities).Add(entity);
 		}
 
 		public void Update(T entity)
@@ -36,10 +37,10 @@ namespace TestShop.FakeDataLayer
 			if (obj == null)
 				return;
 
-			var index = _entities.IndexOf(obj);
+			var index = ((List<IEntityBase>)_entities).IndexOf(obj);
 
-			_entities.Remove(obj);
-			_entities.Insert(index, entity);
+			((List<IEntityBase>)_entities).Remove(obj);
+			((List<IEntityBase>)_entities).Insert(index, entity);
 		}
 
 		public void Delete(T entity)
@@ -50,7 +51,7 @@ namespace TestShop.FakeDataLayer
 			if (obj == null)
 				return;
 
-			_entities.Remove(obj);
+			((List<IEntityBase>)_entities).Remove(obj);
 		}
 	}
 }

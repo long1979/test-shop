@@ -1,0 +1,42 @@
+﻿@model IEnumerable<TestEntity>
+@{
+	ViewBag.Title = "Список тестовых сущностей";
+}
+<div class="row">
+	<div class="col-lg-4">
+		@Html.ActionLink("Добавить", "Create", null, new { @class = "btn btn-primary" })
+	</div>
+</div>
+<div class="row">
+	<table class="table-bordered table">
+		<thead>
+			<tr>
+				<th class="col-lg-1">
+					Идентификатор
+				</th>
+				<th class="col-lg-6">
+					Название
+				</th>
+				<th class="col-lg-2">
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var row in Model)
+			{
+				<tr>
+					<td>
+						@row.EntityId
+					</td>
+					<td>
+						@row.Name
+					</td>
+					<td>
+						@Html.ActionLink("Редактировать", "Update", null, new { @class = "btn btn-link" })
+						@Html.ActionLink("Удалить", "Delete", null, new { @class = "btn btn-link" })
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>

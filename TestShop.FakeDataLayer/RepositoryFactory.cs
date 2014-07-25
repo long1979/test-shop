@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TestShop.DataLayer.Interfaces;
 
 namespace TestShop.FakeDataLayer
 {
     public class RepositoryFactory
     {
-	    private readonly Dictionary<Type, IList<IEntityBase>> _objects = new Dictionary<Type, IList<IEntityBase>>(); 
+		private readonly Dictionary<Type, IEnumerable<IEntityBase>> _objects = new Dictionary<Type, IEnumerable<IEntityBase>>(); 
 		public IRepository<T> CreateRepository<T>() where T : class, IEntityBase
 		{
-			IList<IEntityBase> itemsList;
+			IEnumerable<IEntityBase> itemsList;
 			if (!_objects.TryGetValue(typeof (T), out itemsList))
 			{
-				_objects[typeof(T)] = new List<IEntityBase>();
+				itemsList = _objects[typeof(T)] = new List<IEntityBase>();
 			}
 
-			return new FakeRepository<T>((IList<T>) itemsList);
+			return new FakeRepository<T>(itemsList);
 		}
 		
 	    private static readonly object LockObject = new object();
