@@ -1,0 +1,20 @@
+﻿@model TestEntity
+
+@{
+	ViewBag.Title = "Удаление сущности";
+}
+<div class="row">
+	<div class="col-lg-4">
+		<div class="alert alert-danger">
+			<span>Действительно удалить запись @Model.Name?</span>
+		</div>
+		@using (Html.BeginForm("Delete", "TestGoods", null, FormMethod.Post, new {@class = "form-horizontal"}))
+		{
+			@Html.AntiForgeryToken()
+			@Html.HiddenFor(m => m.EntityId)
+
+			<button type="submit" class="btn btn-warning ">Удалить</button>
+			@Html.ActionLink("Отмена", "Index", null, new {@class = "btn btn-success"})
+		}
+	</div>
+</div>

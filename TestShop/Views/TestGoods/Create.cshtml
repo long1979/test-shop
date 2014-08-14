@@ -1,0 +1,22 @@
+﻿@model TestShop.Dto.TestGoods.CreateDto
+@{
+	ViewBag.Title = "Создание элемента";
+}
+<div class="row">
+	<div class="col-lg-4">
+		@using (Html.BeginForm("Create", "TestGoods", null, FormMethod.Post, new { @class = "form-group" }))
+		{
+			@Html.AntiForgeryToken()
+
+			<div class="control-label">
+				@Html.LabelFor(m => m.Name)
+			</div>
+			<div class="form-group">
+				@Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-default ">Создать</button>
+			</div>
+		}
+	</div>
+</div>
